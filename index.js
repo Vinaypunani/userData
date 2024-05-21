@@ -3,6 +3,7 @@ const path = require('path')
 const mongoose = require('mongoose')
 
 const userModels = require('./models/users')
+const { log } = require('console')
 
 const app = express()
 const port = 3000
@@ -31,8 +32,19 @@ app.get('/user', async (req, res)=>{
     res.render('users',{userRead: userRead})
 })
 
+app.get('/edit/:id', async (req, res)=>{
+    let User = await userModels.findOne({_id:req.params.id})
+    res.render('edit',{User})
+})
+
 app.get('/user/:id', async (req, res)=>{
     await userModels.findOneAndDelete({_id : req.params.id})
+    res.redirect('/user')
+})
+
+app.post('/update/:id', async (req,res)=>{
+    let {name, email, image} = req.body
+    let updateUser = await userModels.findOneAndUpdate({_id: req.params.id},{name, email, image},{new:true})
     res.redirect('/user')
 })
 
