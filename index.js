@@ -33,7 +33,7 @@ app.get('/user', async (req, res)=>{
 
 app.get('/user/:id', async (req, res)=>{
     await userModels.findOneAndDelete({_id : req.params.id})
-    res.redirect('/')
+    res.redirect('/user')
 })
 
 app.listen(3000)
